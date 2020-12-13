@@ -56,7 +56,7 @@ def appStarted(app):
     app.language = 'en'
     app.r = sr.Recognizer()
     app.speechRecognized=""
-    
+    app.countdown=120
     
     
 
@@ -143,10 +143,10 @@ def insABSwitch(app):
         app.isInsAB*=-1
         if app.timer>=1000:
             speechRecognition(app)
-            if app.speechRecognized[0,9]=="hey let's":
+            if len(app.speechRecognized)>=9 and app.speechRecognized[0,9]=="hey let's":
                 app.isStarted=True
                 app.isInsC=True
-            else:
+            else:os.system("omxplayer errorMessage.mp3") 
             
             
 def speechRecognition(app):
@@ -178,29 +178,52 @@ def timerFired(app):
                     #voiceIns = gTTS(text=app.insC, lang=app.language, slow=False) 
                     #voiceIns.save("voiceInstruction1.mp3") 
                     os.system("omxplayer voiceInstruction1.mp3") 
-                if (app.insCCounter==20):
+                if (app.timer==200):#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     app.isInsC=False
                     app.isInsD=True
+                    app.timer=0
             elif (app.isInsD==True):
-                app.insDCounter+=1
-                if (app.insDCounter//100==0):
+                if app.timer==50:os.system("omxplayer voiceInstruction2.wav") 
+                if (app.timer>=1000 and app.timer%200==0):
                     #voiceIns = gTTS(text=app.insD, lang=app.language, slow=False) 
                     #voiceIns.save("voiceInstruction2.wav") 
-                    os.system("omxplayer voiceInstruction2.wav") 
-            elif (app.isInsD==True):
-                app.insECounter+=1
-                if (app.insDCounter//100==0):
+                    speechRecognition(app)
+                    if len(app.speechRecognized)>=9 and app.speechRecognized[0,9]=="i'm ready":
+                        app.isInsE=True
+                        app.isInsD=False
+                        app.timer=0
+                    else:os.system("omxplayer errorMessage.mp3") 
+            elif (app.isInsE==True):
+                if (app.timer==50):
                     #voiceIns = gTTS(text=app.insE, lang=app.language, slow=False) 
                     #voiceIns.save("voiceInstruction.wav") 
                     os.system("omxplayer voiceInstruction3.wav")  
-                if (app.insDCounter==20):
                     app.isInsE=False
                     app.isInsF=True
-
-            
-    
+                    app.timer=0
+            elif (app.isInsF==True):
+                app.countDown-=10
+            elif (app.isInsG==True):
+                if app.timer==50:os.system("omxplayer voiceInstruction4.wav") 
+                if (app.timer>=1000 and app.timer%200==0):
+                    #voiceIns = gTTS(text=app.insD, lang=app.language, slow=False) 
+                    #voiceIns.save("voiceInstruction2.wav") 
+                    speechRecognition(app)
+                    if len(app.speechRecognized)>=8 and app.speechRecognized[0,7]=="mission":
+                        app.isInsH=True
+                        app.isInsG=False
+                        app.timer=0
+                    else:os.system("omxplayer errorMessage.mp3")
+            elif (app.isInsH==True):
+                if (app.timer==50):
+                    #voiceIns = gTTS(text=app.insE, lang=app.language, slow=False) 
+                    #voiceIns.save("voiceInstruction.wav") 
+                    os.system("omxplayer voiceInstruction5.wav")
+                if (app.timer==100)
+                    appStarted(app)
     
 def redrawAll(app, canvas):
+    #drawBG(app,canvas)
     drawInsA(app,canvas)
     drawInsB(app,canvas)
     drawInsC(app,canvas)
