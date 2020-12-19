@@ -101,5 +101,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setApplicationName("Retail Sanitization UI Sys")
 
-    window = MainWindow()
+    window = Main()
     app.exec_()
