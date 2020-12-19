@@ -10,7 +10,7 @@ import sys
 import time
 import pyqrcode
 
-class MainWindow(QMainWindow):
+class Main(QMainWindow):
 
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
